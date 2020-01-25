@@ -1,0 +1,104 @@
+﻿<Page x:Class="Game.MainMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Game"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Loaded="Page_Loaded"
+      Title="MainMenu">
+    <Page.Resources>
+        <Style x:Key="startbtn" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="25" Background="#A8A8A8" Name="Background">
+                            <TextBlock FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Начать игру" Name="Text"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#D8D8D8" TargetName="Background"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="rightarrow" TargetType="Button">
+            <Setter Property="Margin" Value="0 0 50 0"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Name="Back" CornerRadius="25" Background="#A8A8A8">
+                            <Image Margin="5" Source="Images/right-arrow.png" Name="arrow"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#D8D8D8" TargetName="Back"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="leftarrow" TargetType="Button">
+            <Setter Property="Margin" Value="50 0 0 0"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Name="Back" CornerRadius="25" Background="#A8A8A8">
+                            <Image Margin="5" Source="Images/left-arrow.png" Name="arrow"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#D8D8D8" TargetName="Back"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="LightBrush" Color="White"/>
+    </Page.Resources>
+    <Grid>
+        <Image Visibility="Visible" x:Name="IMG" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
+        <Image Visibility="Collapsed" x:Name="IMG1" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Source="Images/tictactoe.png"/>
+        <Image Visibility="Collapsed" x:Name="IMG2" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Source="Images/Crossword.jpg"/>
+        <Image Visibility="Collapsed" x:Name="IMG3" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Source="Images/vict.png"/>
+        <Image Visibility="Collapsed" x:Name="IMG4" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" Source="Images/glebb.jpg"/>
+        <Grid>
+            <Grid Grid.Row="1">
+                <Grid x:Name="mainmenu">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="110"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="110"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid Opacity="0.9" Background="#202020" Grid.Row="2"/>
+                        <TextBlock TextAlignment="Center" x:Name="Gmae" Foreground="#D8D8D8" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="67" Text=" "/>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid Opacity="0.9" Background="#202020"/>
+                        <Button HorizontalAlignment="Left" Style="{StaticResource leftarrow}" Click="Button_Click_2"/>
+                            <Button Style="{StaticResource startbtn}" Click="Button_Click"/>
+                        <Button HorizontalAlignment="Right" Style="{StaticResource rightarrow}" Click="Button_Click_1"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

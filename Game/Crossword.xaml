@@ -1,0 +1,984 @@
+﻿<Page x:Class="Game.Crossword"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Game"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Crossword">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ToolTip">
+            <Setter Property="FontStretch" Value="UltraExpanded"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="/Fonts/#Font"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="/Game;component/Fonts/#SFNS Display"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="25" Background="#A8A8A8" Name="Background">
+                            <DockPanel>
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}"/>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#D8D8D8" TargetName="Background"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Image Margin="-25" Source="Images/Crossword.jpg" Stretch="UniformToFill">
+            <Image.Effect>
+                <BlurEffect Radius="50"/>
+            </Image.Effect>
+        </Image>
+        <Grid Background="#202020" Opacity="0.7"></Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="110"/>
+            </Grid.RowDefinitions>
+            <Grid Opacity="0.7" Grid.Row="1" Background="#202020"/>
+            <Viewbox Grid.Row="0" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center" Stretch="Uniform">
+                <TextBlock Width="900" FontSize="30" x:Name="info" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+            </Viewbox>
+            <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+                <Viewbox Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="Uniform">
+                    <TextBlock Name="gg" FontSize="30" TextWrapping="Wrap" Grid.Column="0" Width="750"><Run Text="1. Как называется предложение, выражающее суждение, о котором сказать, что оно истинно или ложно? "/><LineBreak/><Run Text="2. Как называется мысль, в которой утверждается наличие или отсутствие каких-либо положений дел? "/><LineBreak/><Run Text="3. Как называется операция над суждениями, результатом которой является суждение «противоположное» исходному?"/><LineBreak/><Run Text="4. Как называется операция, которая истинна тогда и только тогда, когда оба высказывания истинны? "/><LineBreak/><Run Text="5. Как называется операция, которая ложна тогда и только тогда, когда оба высказывания ложны?"/><LineBreak/><Run Text="6. Как называется операция, которая ложна тогда и только тогда, когда первое высказывание истинно, а второе высказывание ложно? "/><LineBreak/><Run Text="7. Как называется утверждение, предназначенное для обоснования или объяснения некоторого аргумента? "/><LineBreak/><Run Text="8. Как называется логическая посылка, используемая отдельно или в совокупности с другими с целью доказательства истинности определённого утверждения? "/><LineBreak/><Run Text="9. Как называется операция, которая истинна тогда и только тогда, когда оба высказывания "/><LineBreak/><Run Text="одновременно истинны или ложны? "/><LineBreak/><Run Text="10. Фундаментальное понятие в логике, которое описывает отношения между утверждениями, которые выполняются, когда одно утверждение логически следует из одного или нескольких утверждений.  "/><LineBreak/><Run Text="11. Как называется утверждение, высказанное о субъекте? "/><LineBreak/><Run Text="12. Как называется подлежащее суждения, предмет, о котором что-либо утверждается или отрицается? "/><LineBreak/><Run Text="13. Как называется общее название для логических операций, ограничивающих область истинности какого-либо предиката и создающих высказывание? "/><LineBreak/><Run Text="14. Как называется корректно сформированная формула, которая не содержит свободных вхождений переменных? "/><LineBreak/><Run Text="15. Как называется произвольная совокупность определённых и различимых объектов, мысленно объединённых в единое целое и называемых его элементами? "/><LineBreak/><Run Text="16. Как называется множество, относящееся к другому множеству? "/><LineBreak/><Run Text="17. Как называется закон логики, который гласит, что два несовместимых (противоречащих) суждения не могут быть одновременно истинными, по крайней мере одно из них ложно? "/></TextBlock>
+                </Viewbox>
+                <Viewbox HorizontalAlignment="Center" Margin="10" Stretch="Uniform" Grid.Column="1">
+                    <Grid Width="800" Height="800" Name="crossword">
+                    <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="14" x:Name="ot11" Text="12"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Margin="2" Grid.Column="14" x:Name="qw_10_1" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="19" x:Name="qw_10_6" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="18" x:Name="qw_10_5" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="22" x:Name="qw_10_9" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="21" x:Name="qw_10_8" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="20" x:Name="qw_10_7" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="16" x:Name="qw_10_3" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="15" x:Name="qw_10_2" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="17" x:Name="qw_10_4" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="13" x:Name="ot9" Text="10">
+                        <TextBlock.ToolTip>
+                            Фундаментальное понятие в логике, которое описывает отношения между утверждениями, которые выполняются, когда одно утверждение логически следует из одного или нескольких утверждений.
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="6" x:Name="ot2" Text="3">
+                        <TextBlock.ToolTip>
+                            Как называется операция над суждениями, результатом которой является суждение «противоположное» исходному?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <Grid/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="8" x:Name="ot7" Text="8">
+                        <TextBlock.ToolTip>
+                            Как называется логическая посылка, используемая отдельно или в совокупности с другими с целью доказательства истинности определённого утверждения?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <TextBox x:Name="qw_3_1" Margin="2" Grid.Column="6" MaxLength="1"/>
+                    <TextBox x:Name="qw_12_2" Margin="2" Grid.Column="14" MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_2" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_12_3"  MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_1" MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_3" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_12_4"  MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_2" MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_4" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_12_5"  MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_3" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="17" x:Name="ot15" Text="16"/>
+                </Grid>
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_5" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_12_6"  MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_1" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_4" MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="7">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_6" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_12_7"  MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_5" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_2" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="19" x:Name="qw_17_9"  MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="18" x:Name="qw_17_8"  MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="22" x:Name="qw_17_12" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="21" x:Name="qw_17_11" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="20" x:Name="qw_17_10" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="11" x:Name="qw_17_1"  MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="13" x:Name="qw_17_3"  MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="12" x:Name="qw_17_2"  MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="16" x:Name="qw_17_6"  MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="15" x:Name="qw_17_5"  MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="10" x:Name="ot16" Text="17"/>
+                </Grid>
+                <Grid Grid.Row="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_3" MaxLength="1"/>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_2_6" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_2_7" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="5" x:Name="qw_2_5" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="4" x:Name="qw_2_4" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="3" x:Name="qw_2_3" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="2" x:Name="qw_2_2" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="1" x:Name="qw_2_1" MaxLength="1"/>
+                    <TextBox Margin="2" Grid.Column="7" x:Name="qw_2_8" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="10" x:Name="ot6" Text="7">
+                        <TextBlock.ToolTip>
+                            Как называется утверждение, предназначенное для обоснования или объяснения некоторого аргумента?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" x:Name="ot1" Text="2">
+                        <TextBlock.ToolTip>
+                            Как называется мысль, в которой утверждается наличие или отсутствие каких-либо положений дел?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_8" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_7" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_4" MaxLength="1"/>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_7_1" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="12" x:Name="ot12" Text="13"/>
+                </Grid>
+                <Grid Grid.Row="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_3_9" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_8_8" MaxLength="1"/>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_7_2" MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_15_4" MaxLength="1"/>
+                    <TextBox Grid.Column="4" Margin="2" x:Name="qw_15_3" MaxLength="1"/>
+                    <TextBox Grid.Column="3" Margin="2" x:Name="qw_15_2" MaxLength="1"/>
+                    <TextBox Grid.Column="2" Margin="2" x:Name="qw_15_1" MaxLength="1"/>
+                    <TextBox Grid.Column="7" Margin="2" x:Name="qw_15_5" MaxLength="1"/>
+                    <TextBox Grid.Column="9" Margin="2" x:Name="qw_15_7" MaxLength="1"/>
+                    <TextBox Grid.Column="15" Margin="2" x:Name="qw_4_4"   MaxLength="1" />
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_4_3"   MaxLength="1"/>
+                    <TextBox Grid.Column="13" Margin="2" x:Name="qw_4_2"   MaxLength="1"/>
+                    <TextBox Grid.Column="18" Margin="2" x:Name="qw_4_7"   MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_4_6"   MaxLength="1"/>
+                    <TextBox Grid.Column="16" Margin="2" x:Name="qw_4_5"   MaxLength="1"/>
+                    <TextBox Grid.Column="21" Margin="2" x:Name="qw_4_10"  MaxLength="1"/>
+                    <TextBox Grid.Column="20" Margin="2" x:Name="qw_4_9"   MaxLength="1"/>
+                    <TextBox Grid.Column="19" Margin="2" x:Name="qw_4_8"   MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_4_1"   MaxLength="1"  />
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1" x:Name="ot14" Text="15"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="11" x:Name="ot3" Text="4">
+                        <TextBlock.ToolTip>
+                            Как называется операция, которая истинна тогда и только тогда, когда оба высказывания истинны?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="11">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_7_3" MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_13_2" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_6" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="14" x:Name="ot5" Text="6">
+                        <TextBlock.ToolTip>
+                            Как называется операция, которая ложна тогда и только тогда, когда первое высказывание истинно, а второе высказывание ложно?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="9" Margin="2" x:Name="qw_1_6" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_1_5" MaxLength="1"/>
+                    <TextBox Grid.Column="7" Margin="2" x:Name="qw_1_4" MaxLength="1"/>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_1_3" MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_1_2" MaxLength="1"/>
+                    <TextBox Grid.Column="4" Margin="2" x:Name="qw_1_1" MaxLength="1"/>
+                    <TextBox Grid.Column="15" Margin="2" x:Name="qw_1_12" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_1_11" MaxLength="1"/>
+                    <TextBox Grid.Column="13" Margin="2" x:Name="qw_1_10" MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_1_9" MaxLength="1"/>
+                    <TextBox Grid.Column="11" Margin="2" x:Name="qw_1_8"  MaxLength="1"/>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_1_7" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_7" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="3" x:Name="ot" Text="1">
+                        <TextBlock.ToolTip>
+                            Как называется предложение, выражающее суждение, о котором сказать, что оно истинно или ложно?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="13">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_7_5" MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_13_4" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_8" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_2" MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="5" x:Name="ot13" Text="14"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="8" x:Name="ot4" Text="5">
+                        <TextBlock.ToolTip>
+                            Как называется операция, которая ложна тогда и только тогда, когда оба высказывания ложны?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_7_6" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_9" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_3" MaxLength="1"/>
+                    <TextBox Grid.Column="7" Margin="2" x:Name="qw_11_3" MaxLength="1"/>
+                    <TextBox Grid.Column="6" Margin="2" x:Name="qw_11_2" MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_11_1" MaxLength="1"/>
+                    <TextBox Grid.Column="9" Margin="2" x:Name="qw_11_5" MaxLength="1" />
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_11_8"  MaxLength="1"  />
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_1"  MaxLength="1"/>
+                    <TextBox Grid.Column="11" Margin="2" x:Name="qw_11_7"  MaxLength="1"  />
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="4" x:Name="ot10" Text="11"/>
+                </Grid>
+                <Grid Grid.Row="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="10" Margin="2" x:Name="qw_7_7" MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_10" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_4" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_2"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_2"  MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_13_6"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_11" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_5" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_3"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_3"  MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_13_7"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="17">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_16_12" MaxLength="1"/>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_6" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_4"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_4"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_7" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_5"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_5"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="19">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_8" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_6"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_6"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_9" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_7"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_7"  MaxLength="1"/>
+                    <TextBox Grid.Column="13" Margin="2" x:Name="qw_9_3"   MaxLength="1"/>
+                    <TextBox Grid.Column="12" Margin="2" x:Name="qw_9_2"   MaxLength="1"/>
+                    <TextBox Grid.Column="11" Margin="2" x:Name="qw_9_1"   MaxLength="1"/>
+                    <TextBox Grid.Column="16" Margin="2" x:Name="qw_9_6"   MaxLength="1"/>
+                    <TextBox Grid.Column="15" Margin="2" x:Name="qw_9_5"   MaxLength="1"/>
+                    <TextBox Grid.Column="19" Margin="2" x:Name="qw_9_9"   MaxLength="1"/>
+                    <TextBox Grid.Column="18" Margin="2" x:Name="qw_9_8"   MaxLength="1"/>
+                    <TextBox Grid.Column="17" Margin="2" x:Name="qw_9_7"   MaxLength="1"/>
+                    <TextBox Grid.Column="22" Margin="2" x:Name="qw_9_12"  MaxLength="1"/>
+                    <TextBox Grid.Column="21" Margin="2" x:Name="qw_9_11"  MaxLength="1"/>
+                    <TextBox Grid.Column="20" Margin="2" x:Name="qw_9_10"  MaxLength="1"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="10" x:Name="ot8" Text="9">
+                        <TextBlock.ToolTip>
+                            Как называется операция, которая истинна тогда и только тогда, когда оба высказывания одновременно истинны или ложны?
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="21">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="14" Margin="2" x:Name="qw_6_10" MaxLength="1"/>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_8"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_8"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="22">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_9"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_9"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="23">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="8" Margin="2" x:Name="qw_5_10"  MaxLength="1"/>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_10"  MaxLength="1"/>
+                </Grid>
+                <Grid Grid.Row="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="5" Margin="2" x:Name="qw_14_11"  MaxLength="1"/>
+                </Grid>
+            </Grid>
+                </Viewbox>
+            </Grid>
+            <Button Margin="40 0 0 0" Grid.Row="1" x:Name="rest" Grid.ColumnSpan="4" Content="Перепройти" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Rest_Click" Visibility="Collapsed"  />
+            <Button Margin="0 0 40 0" Grid.Row="1" Content="В главное меню" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Button_Click_1"/>
+            <Button Margin="40 0 0 0" Grid.Row="1" x:Name="checke" Content="Проверить" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click" Grid.Column="1" Grid.ColumnSpan="4"/>
+        </Grid>
+    </Grid>
+</Page>
